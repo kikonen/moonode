@@ -11,3 +11,7 @@ core.*
 local/
 src/TODO
 src/DIFF
+
+/x64
+vcpkg_installed
+.vs
