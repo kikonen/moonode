@@ -32,11 +32,11 @@ static void AtExit(void)
     if(moonode_L)
         {
         dCloseODE();
-        enums_free_all(moonode_L);
+        //enums_free_all(moonode_L);
         moonode_L = NULL;
         }
     }
- 
+
 static int AddVersions(lua_State *L)
     {
     lua_pushstring(L, "_VERSION");
@@ -107,7 +107,7 @@ F(Quat, quat, quat_t)
 F(Box3, box3, box3_t)
 #undef F
 
-static const struct luaL_Reg Functions[] = 
+static const struct luaL_Reg Functions[] =
     {
         { "init", Init },
         { "get_configuration", GetConfiguration },
@@ -123,7 +123,7 @@ static const struct luaL_Reg Functions[] =
         { NULL, NULL } /* sentinel */
     };
 
-int luaopen_moonode(lua_State *L)
+MOONODE_API int luaopen_moonode(lua_State *L)
 /* Lua calls this function to load the module */
     {
     moonode_L = L;
@@ -134,6 +134,7 @@ int luaopen_moonode(lua_State *L)
     atexit(AtExit);
 
     lua_newtable(L); /* the module table */
+
     moonode_open_enums(L);
     moonode_open_flags(L);
     AddVersions(L);

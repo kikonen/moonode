@@ -27,8 +27,8 @@
 #define moonodeDEFINED
 
 #include <lua.h>
-#include "lualib.h"
-#include "lauxlib.h"
+#include <lualib.h>
+#include <lauxlib.h>
 #include "compat-5.3.h"
 
 #include <ode/ode.h>
@@ -40,4 +40,3 @@
 #define MOONODE_VERSION      "0.1"
 
 #endif /* moonodeDEFINED */
-

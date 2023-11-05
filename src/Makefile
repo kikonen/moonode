@@ -11,6 +11,8 @@ ifeq ($(LUAVER),)
 # lua-interpreter not found
 LUAVER=5.3
 endif
+LUADIR=luajit
+LUAVER=5_1-2.1
 
 # Base install directory
 ifdef LINUX
@@ -21,9 +23,9 @@ PREFIX?=$(MINGW_PREFIX)
 endif
 
 # Directory where to install Lua modules
-L_DIR=$(PREFIX)/share/lua/$(LUAVER)
+L_DIR=$(PREFIX)/share/$(LUADIR)/$(LUAVER)
 # Directory where to install Lua C modules
-C_DIR=$(PREFIX)/lib/lua/$(LUAVER)
+C_DIR=$(PREFIX)/lib/$(LUADIR)/$(LUAVER)
 # Directory where to install C headers
 H_DIR=$(PREFIX)/include
 # Directory where to install C libraries
@@ -44,7 +46,7 @@ Tgt	:= moonode
 Src := $(wildcard *.c)
 Objs := $(Src:.c=.o)
 
-INCDIR = -I. -I/usr/include/lua$(LUAVER)
+INCDIR = -I. -I/usr/include/$(LUADIR)-$(LUAVER)
 
 COPT	+= -O2
 #COPT	+= -O0 -g
@@ -122,4 +124,3 @@ ifdef MINGW
 endif
 	@-rm -f $(Objs)
 	@echo
-

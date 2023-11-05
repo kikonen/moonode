@@ -26,6 +26,12 @@
 #ifndef internalDEFINED
 #define internalDEFINED
 
+#ifdef _WINDOWS
+#include "../moonode_dll.h"
+#else
+#define MOONODE_API
+#endif
+
 #ifdef LINUX
 #define _ISOC11_SOURCE /* see man aligned_alloc(3) */
 #endif
@@ -62,7 +68,7 @@ void moonode_utils_init(lua_State *L);
 #define copytable moonode_copytable
 int copytable(lua_State *L);
 #define noprintf moonode_noprintf
-int noprintf(const char *fmt, ...); 
+int noprintf(const char *fmt, ...);
 #define now moonode_now
 double now(void);
 #define sleeep moonode_sleeep
@@ -233,7 +239,7 @@ int spacedestroy(lua_State *L, space_t space);
 
 /* main.c */
 extern lua_State *moonode_L;
-int luaopen_moonode(lua_State *L);
+MOONODE_API int luaopen_moonode(lua_State *L);
 void moonode_open_mass(lua_State *L);
 void moonode_open_collide(lua_State *L);
 void moonode_open_enums(lua_State *L);
@@ -324,13 +330,13 @@ void moonode_open_datahandling(lua_State *L);
     ts = now();                                             \
 } while(0);
 
-#else 
+#else
 
 #define DBG noprintf
 #define TR()
 #define BK()
-#define TSTART do {} while(0) 
-#define TSTOP do {} while(0)    
+#define TSTART do {} while(0)
+#define TSTOP do {} while(0)
 
 #endif /* DEBUG ------------------------------------------------- */
 
