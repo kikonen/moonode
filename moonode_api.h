@@ -11,12 +11,12 @@
 #endif
 
 // This class is exported from the dll
-class MOONODE_API Cmoonode {
-public:
-	Cmoonode(void);
-	// TODO: add your methods here.
-};
+//class MOONODE_API Cmoonode {
+//public:
+//	Cmoonode(void);
+//	// TODO: add your methods here.
+//};
 
-extern MOONODE_API int nmoonode;
+//extern MOONODE_API int nmoonode;
 
-MOONODE_API int fnmoonode(void);
+//MOONODE_API int fnmoonode(void);
