@@ -29,8 +29,8 @@ extern "C" {
 #endif
 
 #include <stdint.h>
-#include "lua.h"
-#include "lauxlib.h"
+#include <lua.h>
+#include <lauxlib.h>
 #include "compat-5.3.h"
 
 #ifndef Malloc
@@ -57,7 +57,7 @@ int udata_push(lua_State*, uint64_t);
 #define udata_free_all moonode_udata_free_all
 void udata_free_all(lua_State *L);
 #define udata_scan moonode_udata_scan
-int udata_scan(lua_State *L, const char *mt,  
+int udata_scan(lua_State *L, const char *mt,
             void *info, int (*func)(lua_State *L, const void *mem, const char* mt, const void *info));
 #define udata_define moonode_udata_define
 int udata_define(lua_State*, const char*, const luaL_Reg*, const luaL_Reg*);
@@ -71,4 +71,3 @@ int udata_addmethods(lua_State*, const char*, const luaL_Reg*);
 #ifdef __cplusplus
 }
 #endif
-

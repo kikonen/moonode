@@ -89,7 +89,7 @@ SET_PARAM(SetParam, dJointSetLMotorParam, lmotor)
 GET_PARAM(GetParam, dJointGetLMotorParam, lmotor)
 DESTROY_FUNC(joint)
 
-static const struct luaL_Reg Methods[] = 
+static const struct luaL_Reg Methods[] =
     {
         { "set_param", SetParam },
         { "get_param", GetParam },
@@ -105,13 +105,13 @@ static const struct luaL_Reg Methods[] =
         { NULL, NULL } /* sentinel */
     };
 
-static const struct luaL_Reg MetaMethods[] = 
+static const struct luaL_Reg MetaMethods[] =
     {
         { "__gc", Destroy },
         { NULL, NULL } /* sentinel */
     };
 
-static const struct luaL_Reg Functions[] = 
+static const struct luaL_Reg Functions[] =
     {
         { "create_lmotor_joint", Create },
         { NULL, NULL } /* sentinel */

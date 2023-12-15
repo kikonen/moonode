@@ -27,9 +27,9 @@
 #include <stdlib.h>
 #include "tree.h"
 #include "udata.h"
-#include "lua.h"
-#include "lauxlib.h"
-#include "lualib.h"
+#include <lua.h>
+#include <lauxlib.h>
+#include <lualib.h>
 
 struct moonode_udata_s {
     RB_ENTRY(moonode_udata_s) entry;
@@ -43,20 +43,20 @@ struct moonode_udata_s {
 #define UNEXPECTED_ERROR "unexpected error (%s, %d)", __FILE__, __LINE__
 
 static int cmp(udata_t *udata1, udata_t *udata2) /* the compare function */
-    { return (udata1->id < udata2->id ? -1 : udata1->id > udata2->id); } 
+    { return (udata1->id < udata2->id ? -1 : udata1->id > udata2->id); }
 
 static RB_HEAD(udatatree_s, udata_s) Head = RB_INITIALIZER(&Head);
 
-RB_PROTOTYPE_STATIC(udatatree_s, udata_s, entry, cmp) 
-RB_GENERATE_STATIC(udatatree_s, udata_s, entry, cmp) 
- 
-static udata_t *udata_remove(udata_t *udata) 
+RB_PROTOTYPE_STATIC(udatatree_s, udata_s, entry, cmp)
+RB_GENERATE_STATIC(udatatree_s, udata_s, entry, cmp)
+
+static udata_t *udata_remove(udata_t *udata)
     { return RB_REMOVE(udatatree_s, &Head, udata); }
-static udata_t *udata_insert(udata_t *udata) 
+static udata_t *udata_insert(udata_t *udata)
     { return RB_INSERT(udatatree_s, &Head, udata); }
-static udata_t *udata_search(uint64_t id) 
+static udata_t *udata_search(uint64_t id)
     { udata_t tmp; tmp.id = id; return RB_FIND(udatatree_s, &Head, &tmp); }
-static udata_t *udata_first(uint64_t id) 
+static udata_t *udata_first(uint64_t id)
     { udata_t tmp; tmp.id = id; return RB_NFIND(udatatree_s, &Head, &tmp); }
 #if 0
 static udata_t *udata_next(udata_t *udata)
@@ -83,22 +83,22 @@ void *udata_new(lua_State *L, size_t size, uint64_t id_, const char *mt)
  */
     {
     udata_t *udata;
-    if((udata = (udata_t*)Malloc(L, sizeof(udata_t))) == NULL) 
+    if((udata = (udata_t*)Malloc(L, sizeof(udata_t))) == NULL)
         { luaL_error(L, "cannot allocate memory"); return NULL; }
     memset(udata, 0, sizeof(udata_t));
     udata->mem = lua_newuserdata(L, size);
     if(!udata->mem)
         {
         Free(L, udata);
-        luaL_error(L, "lua_newuserdata error"); 
+        luaL_error(L, "lua_newuserdata error");
         return NULL;
         }
     udata->id = id_ != 0 ? id_ : (uint64_t)(uintptr_t)(udata->mem);
     if(udata_search(udata->id))
-        { 
+        {
         Free(L, udata);
-        luaL_error(L, "duplicated object %p", id_); 
-        return NULL; 
+        luaL_error(L, "duplicated object %p", id_);
+        return NULL;
         }
     /* create a reference for later push's */
     lua_pushvalue(L, -1); /* the newly created userdata */
@@ -124,7 +124,7 @@ int udata_unref(lua_State *L, uint64_t id)
     {
 //  printf("unref object %lu\n", id);
     udata_t *udata = udata_search(id);
-    if(!udata) 
+    if(!udata)
         return luaL_error(L, "invalid object identifier %p", id);
     if(udata->ref != LUA_NOREF)
         {
@@ -140,7 +140,7 @@ int udata_free(lua_State *L, uint64_t id)
     {
     udata_t *udata = udata_search(id);
 //  printf("free object %lu\n", id);
-    if(!udata) 
+    if(!udata)
         return luaL_error(L, "invalid object identifier %p", id);
     /* release all references */
     if(udata->ref != LUA_NOREF)
@@ -155,7 +155,7 @@ int udata_free(lua_State *L, uint64_t id)
 int udata_push(lua_State *L, uint64_t id)
     {
     udata_t *udata = udata_search(id);
-    if(!udata) 
+    if(!udata)
         return luaL_error(L, "invalid object identifier %p", id);
     if(udata->ref == LUA_NOREF)
         return luaL_error(L, "unreferenced object");
@@ -175,7 +175,7 @@ void udata_free_all(lua_State *L)
         }
     }
 
-int udata_scan(lua_State *L, const char *mt,  
+int udata_scan(lua_State *L, const char *mt,
             void *info, int (*func)(lua_State *L, const void *mem, const char* mt, const void *info))
 /* scans the udata database, and calls the func callback for every 'mt' object found
  * (the object may be deleted in the callback).
@@ -217,13 +217,13 @@ static int is_subclass(lua_State *L, int arg, int mt_index)
 void *udata_test(lua_State *L, int arg, const char *mt)
 /* same as luaL_testudata(), but succeeds also if the userdata has not
  * mt as metatable but as ancestor
- */ 
+ */
     {
     void *mem;
     int ok;
     if((mem = luaL_testudata(L, arg, mt)))
         return mem;
-    
+
     if((mem = lua_touserdata(L, arg)) == NULL)
         return NULL;
 
@@ -293,4 +293,3 @@ int udata_addmethods(lua_State *L, const char* mt, const luaL_Reg* methods)
     lua_pop(L, 1);
     return 0;
     }
-

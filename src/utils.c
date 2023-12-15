@@ -30,11 +30,11 @@
  | Misc utilities                                                               |
  *------------------------------------------------------------------------------*/
 
-int noprintf(const char *fmt, ...) 
+int noprintf(const char *fmt, ...)
     { (void)fmt; return 0; }
 
-int notavailable(lua_State *L, ...) 
-    { 
+int notavailable(lua_State *L, ...)
+    {
     return luaL_error(L, "function not available in this CL version");
     }
 
@@ -42,7 +42,7 @@ int notavailable(lua_State *L, ...)
  | Malloc                                                                       |
  *------------------------------------------------------------------------------*/
 
-/* We do not use malloc(), free() etc directly. Instead, we inherit the memory 
+/* We do not use malloc(), free() etc directly. Instead, we inherit the memory
  * allocator from the main Lua state instead (see lua_getallocf in the Lua manual)
  * and use that.
  *
@@ -172,7 +172,7 @@ void sleeep(double seconds)
 
 #define time_init(L) do { (void)L; /* do nothing */ } while(0)
 
-#elif defined(MINGW)
+#elif defined(_WINDOWS) || defined(MINGW)
 
 #include <windows.h>
 
@@ -210,7 +210,7 @@ void *checklightuserdata(lua_State *L, int arg)
         { luaL_argerror(L, arg, "expected lightuserdata"); return NULL; }
     return lua_touserdata(L, arg);
     }
-    
+
 void *optlightuserdata(lua_State *L, int arg)
     {
     if(lua_isnoneornil(L, arg))
@@ -241,7 +241,7 @@ int copytable(lua_State *L)
     int src = lua_gettop(L);
     int dst = src - 1;
     lua_pushnil(L);
-    while(lua_next(L, src)) 
+    while(lua_next(L, src))
         {
         lua_pushvalue(L, -2);  // key
         if(lua_type(L, -1)==LUA_TTABLE) /* nested */
@@ -362,4 +362,3 @@ void moonode_utils_init(lua_State *L)
     malloc_init(L);
     time_init(L);
     }
-
