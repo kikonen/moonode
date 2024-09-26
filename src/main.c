@@ -36,7 +36,7 @@ static void AtExit(void)
         moonode_L = NULL;
         }
     }
- 
+
 static int AddVersions(lua_State *L)
     {
     lua_pushstring(L, "_VERSION");
@@ -107,7 +107,7 @@ F(Quat, quat, quat_t)
 F(Box3, box3, box3_t)
 #undef F
 
-static const struct luaL_Reg Functions[] = 
+static const struct luaL_Reg Functions[] =
     {
         { "init", Init },
         { "get_configuration", GetConfiguration },
@@ -123,11 +123,11 @@ static const struct luaL_Reg Functions[] =
         { NULL, NULL } /* sentinel */
     };
 
-int luaopen_moonode(lua_State *L)
+MOONODE_API int luaopen_moonode(lua_State *L)
 /* Lua calls this function to load the module */
     {
     moonode_L = L;
-
+printf("start");
     if(dInitODE2(dAllocateMaskAll)==0)
         return luaL_error(L, "ODE init failed");
     moonode_utils_init(L);

@@ -1,0 +1,22 @@
+{
+  "name": "moonode",
+  "version": "1.0.0",
+  "dependencies": [
+    {
+      "name": "lua",
+      "platform": "windows & x64",
+      "version>=": "5.4.6"
+    },
+    {
+      "name": "lua-compat53",
+      "platform": "windows & x64",
+      "version>=": "0.10"
+    },
+    {
+      "name": "ode",
+      "platform": "windows & x64",
+      "version>=": "0.16.3#1"
+    }
+  ],
+  "builtin-baseline": "d8079ecd674fe5632277d78d761333467955adb1"
+}
